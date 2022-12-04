@@ -638,6 +638,41 @@ if len(UPSTREAM_BRANCH) == 0:
 UPDATE_PACKAGES = environ.get('UPDATE_PACKAGES', '')
 if len(UPDATE_PACKAGES) == 0:
     UPDATE_PACKAGES = 'False'
+    
+try:
+    TOKEN_PICKLE_URL = environ.get('TOKEN_PICKLE_URL')
+    if len(TOKEN_PICKLE_URL) == 0:
+        raise KeyError
+    try:
+        res = rget(TOKEN_PICKLE_URL)
+        if res.status_code == 200:
+            with open('token.pickle', 'wb+') as f:
+                f.write(res.content)
+        else:
+            logging.error(f"Failed to download token.pickle, link got HTTP response: {res.status_code}")
+    except Exception as e:
+        logging.error(f"TOKEN_PICKLE_URL: {e}")
+except:
+    pass
+try:
+    ACCOUNTS_ZIP_URL = environ.get('ACCOUNTS_ZIP_URL')
+    if len(ACCOUNTS_ZIP_URL) == 0:
+        raise KeyError
+    try:
+        res = rget(ACCOUNTS_ZIP_URL)
+        if res.status_code == 200:
+            with open('accounts.zip', 'wb+') as f:
+                f.write(res.content)
+        else:
+            logging.error(f"Failed to download accounts.zip, link got HTTP response: {res.status_code}")
+    except Exception as e:
+        logging.error(f"ACCOUNTS_ZIP_URL: {e}")
+        raise KeyError
+    srun(["unzip", "-q", "-o", "accounts.zip"])
+    srun(["chmod", "-R", "777", "accounts"])
+    osremove("accounts.zip")
+except:
+    pass
 
 
 config_dict = {'ANILIST_ENABLED': ANILIST_ENABLED,
@@ -787,8 +822,9 @@ if not ospath.exists('.netrc'):
     srun(["touch", ".netrc"])
 srun(["cp", ".netrc", "/root/.netrc"])
 srun(["chmod", "600", ".netrc"])
-srun(["chmod", "+x", "aria.sh"])
-srun("./aria.sh", shell=True)
+with open("a2c.conf", "a+") as a:
+    a.write(f"bt-tracker=[{trackers}]")
+srun(["extra-api", "--conf-path=/usr/src/app/a2c.conf"])
 if ospath.exists('accounts.zip'):
     if ospath.exists('accounts'):
         srun(["rm", "-rf", "accounts"])
