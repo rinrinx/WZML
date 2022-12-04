@@ -231,10 +231,10 @@ def get_readable_message():
                         pass
                 else:
                     if config_dict['EMOJI_THEME']:
-                        msg += f'\n<b>├👤 User:</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
+                        msg += f'\n<b>├👤 <b>Id:</b> <code>{download.message.from_user.id}</code>'
                         msg += f"\n<b>╰❌ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
                     else:
-                        msg += f'\n<b>├ User:</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
+                        msg += f'\n<b>├ User: <b>Id:</b> <code>{download.message.from_user.id}</code>'
                         msg += f"\n<b>╰ Cancel: </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
 
             elif download.status() == MirrorStatus.STATUS_SEEDING:
@@ -292,8 +292,8 @@ def get_readable_message():
                 elif 'M' in spd:
                     up_speed += float(spd.split('M')[0]) * 1048576
         if config_dict['EMOJI_THEME']:
-            bmsg = f"<b>🖥 CPU:</b> {cpu_percent()}% | <b>💿 FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
-            bmsg += f"\n<b>🎮 RAM:</b> {virtual_memory().percent}% | <b>🟢 UPTIME:</b> {get_readable_time(time() - botStartTime)}"
+            bmsg = f"<b>CPU:</b> {cpu_percent()}% | <b>FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
+            bmsg += f"\n<b>RAM:</b> {virtual_memory().percent}% | <b>UPTIME:</b> {get_readable_time(time() - botStartTime)}"
             bmsg += f"\n<b>🔻 DL:</b> {get_readable_file_size(dl_speed)}/s | <b>🔺 UL:</b> {get_readable_file_size(up_speed)}/s"
         else:
             bmsg = f"<b>CPU:</b> {cpu_percent()}% | <b>FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
@@ -301,18 +301,18 @@ def get_readable_message():
             bmsg += f"\n<b>🔻 DL:</b> {get_readable_file_size(dl_speed)}/s | <b>🔺 UL:</b> {get_readable_file_size(up_speed)}/s"
         
         buttons = ButtonMaker()
-        buttons.sbutton("Refresh", "status refresh")
-        buttons.sbutton("Statistics", str(THREE))
-        buttons.sbutton("Close", "status close")
+        buttons.sbutton("🔄 Refresh", "status refresh")
+        buttons.sbutton("⚙️ Statistics", str(THREE))
+        buttons.sbutton("✖️ Close", "status close")
         sbutton = buttons.build_menu(3)
         
         if STATUS_LIMIT and tasks > STATUS_LIMIT:
             msg += f"<b>Tasks:</b> {tasks}\n"
             buttons = ButtonMaker()
             if config_dict['EMOJI_THEME']:
-                buttons.sbutton("⏪Previous", "status pre")
+                buttons.sbutton("⏪ Previous", "status pre")
                 buttons.sbutton(f"{PAGE_NO}/{PAGES}", str(THREE))
-                buttons.sbutton("Next⏩", "status nex")
+                buttons.sbutton("Next ⏩", "status nex")
                 buttons.sbutton("Refresh", "status refresh")
                 buttons.sbutton("Close", "status close")
             else:
@@ -499,7 +499,7 @@ def bot_sys_stats():
         if stats.status() == MirrorStatus.STATUS_SPLITTING:
             num_split += 1
     return f"""
-Made with ❤️ by {config_dict['CREDIT_NAME']}
+{config_dict['CREDIT_NAME']}
 
 Tasks: {tasks}
 
