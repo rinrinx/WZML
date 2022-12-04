@@ -33,6 +33,9 @@ qbittorrent-api
 requests
 speedtest-cli
 selenium
+heroku3
+megasdkrestclient
+psycopg2-binary
 telegraph
 tenacity
 tgCrypto
