@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 from pyrogram import Client, enums
 from asyncio import get_event_loop
 from pymongo import MongoClient
+from megasdkrestclient import MegaSdkRestClient, errors as mega_err
 
 main_loop = get_event_loop()
 
@@ -229,17 +230,33 @@ if len(DEF_IMDB_TEMP) == 0:
 LOGGER.info("Generating SESSION_STRING")
 app = Client(name='pyrogram', api_id=(TELEGRAM_API), api_hash=TELEGRAM_HASH, bot_token=BOT_TOKEN, parse_mode=enums.ParseMode.HTML, no_updates=True)
 
-MEGA_API_KEY = environ.get('MEGA_API_KEY', '')
-if len(MEGA_API_KEY) == 0:
-    log_warning('MEGA API KEY not provided!')
-    MEGA_API_KEY = ''
-
-MEGA_EMAIL_ID = environ.get('MEGA_EMAIL_ID', '')
-MEGA_PASSWORD = environ.get('MEGA_PASSWORD', '')
-if len(MEGA_EMAIL_ID) == 0 or len(MEGA_PASSWORD) == 0:
-    log_warning('MEGA Credentials not provided!')
-    MEGA_EMAIL_ID = ''
-    MEGA_PASSWORD = ''
+try:
+    MEGA_KEY = environ.get('MEGA_API_KEY')
+    if len(MEGA_KEY) == 0:
+        raise KeyError
+except:
+    MEGA_KEY = None
+    LOGGER.info('MEGA_API_KEY not provided!')
+if MEGA_KEY is not None:
+    # Start megasdkrest binary
+    Popen(["megasdkrest", "--apikey", MEGA_KEY])
+    sleep(3)  # Wait for the mega server to start listening
+    mega_client = MegaSdkRestClient('http://localhost:6090')
+    try:
+        MEGA_USERNAME = environ.get('MEGA_EMAIL_ID')
+        MEGA_PASSWORD = environ.get('MEGA_PASSWORD')
+        if len(MEGA_USERNAME) > 0 and len(MEGA_PASSWORD) > 0:
+            try:
+                mega_client.login(MEGA_USERNAME, MEGA_PASSWORD)
+            except mega_err.MegaSdkRestClientException as e:
+                log_error(e.message['message'])
+                exit(0)
+        else:
+            log_info("Mega API KEY provided but credentials not provided. Starting mega in anonymous mode!")
+    except:
+        log_info("Mega API KEY provided but credentials not provided. Starting mega in anonymous mode!")
+else:
+    sleep(1.5)
 
 tgBotMaxFileSize = 2097151000
 
