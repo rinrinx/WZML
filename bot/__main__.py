@@ -320,8 +320,8 @@ def bot_help(update, context):
         button.buildbutton("👤 User", f"https://telegra.ph/{help_user}")
         button.buildbutton("🛡️ Admin", f"https://telegra.ph/{help_admin}")
     else:
-        button.buildbutton("User", f"https://telegra.ph/{help_user}")
-        button.buildbutton("Admin", f"https://telegra.ph/{help_admin}")
+        button.buildbutton("Test", f"https://telegra.ph/{help_user}")
+        button.buildbutton("Test", f"https://telegra.ph/{help_admin}")
     sendMarkup(help_string, context.bot, update.message, button.build_menu(2))
 
 
@@ -423,14 +423,14 @@ def main():
                     with open(".restartmsg") as f:
                         chat_id, msg_id = map(int, f)
                     msg = f"😎Restarted successfully❗\n"
-                    msg += f"📅DATE: {date}\n"
-                    msg += f"⌚TIME: {time}\n"
-                    msg += f"🌐TIMEZONE: {timez}\n"
+                    msg += f"Date: {date}\n"
+                    msg += f"Time: {time}\n"
+                    msg += f"Timezone: {timez}\n"
                 else:
                     msg = f"😎Bot Restarted!\n"
-                    msg += f"📅DATE: {date}\n"
-                    msg += f"⌚TIME: {time}\n"
-                    msg += f"🌐TIMEZONE: {timez}"
+                    msg += f"Date: {date}\n"
+                    msg += f"Time: {time}\n"
+                    msg += f"Timezone: {timez}"
 
                 for tag, links in data.items():
                     msg += f"\n{tag}: "
@@ -465,7 +465,7 @@ def main():
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
         try:
-            msg = f"😎Restarted successfully❗\n📅DATE: {date}\n⌚TIME: {time}\n🌐TIMEZONE: {timez}\n"
+            msg = f"Restarted successfully❗\nDate: {date}\nTime: {time}\nTimezone: {timez}\n"
             bot.edit_message_text(msg, chat_id, msg_id)
         except:
             pass        
