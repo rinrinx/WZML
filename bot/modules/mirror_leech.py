@@ -186,7 +186,7 @@ def _mirror_leech(bot, message, isZip=False, extract=False, isQbit=False, isLeec
     if not is_url(link) and not is_magnet(link):
         help_msg = "<b>⛔️ No Download Source</b>"
         if isQbit:
-            help_msg += "<b>⛔️ No Download Source</b>"
+            help_msg += ""
         else:
             help_msg += ""
         reply_message = sendMessage(help_msg, bot, message)
