@@ -188,7 +188,7 @@ def _mirror_leech(bot, message, isZip=False, extract=False, isQbit=False, isLeec
         if isQbit:
             help_msg += "<b>⛔️ No Download Source</b>"
         else:
-            help_msg += "<b>⛔️ No Download Source</b>"
+            help_msg += ""
         reply_message = sendMessage(help_msg, bot, message)
         Thread(target=auto_delete_message, args=(bot, message, reply_message)).start()
         return reply_message
