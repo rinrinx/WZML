@@ -236,6 +236,8 @@ try:
         raise KeyError
 except:
     MEGA_KEY = None
+    MEGA_USERNAME = None
+    MEGA_PASSWORD = None
     LOGGER.info('MEGA_API_KEY not provided!')
 if MEGA_KEY is not None:
     # Start megasdkrest binary
